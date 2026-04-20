@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python demo_image_processing.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python demo_image_processing.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python demo_machine_learning.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python demo_navigation_robotics.py)"
+    ]
+  }
+}
