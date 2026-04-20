@@ -35,10 +35,10 @@ PYTHONIOENCODING=utf-8 python <script>.py
 
 Two real photographs (raccoon face + staircase) show two distinct artifacts:
 
-| Effect | Root cause | Result |
-|--------|-----------|--------|
-| HDR Banding | float16 gap = 32 at offset 32768 | 253 tonal levels → 9 |
-| Coordinate shift | float32 gap = 2 at offset 2²⁴ | 50% of columns mapped wrong |
+| Effect           | Root cause                       | Result                      |
+| ---------------- | -------------------------------- | --------------------------- |
+| HDR Banding      | float16 gap = 32 at offset 32768 | 253 tonal levels → 9        |
+| Coordinate shift | float32 gap = 2 at offset 2²⁴    | 50% of columns mapped wrong |
 
 ![Image processing artifacts](image_processing/output/float_gap_artifacts.png)
 
@@ -68,9 +68,9 @@ The system tracked time with a **24-bit signed fixed-point register**.
 `0.1` truncated to 23 fraction bits = `838860 / 2²³ = 0.09999990…`  
 Error per tick: `9.54 × 10⁻⁸ s` → after 100 h: **0.343 s → 575 m miss**.
 
-> float32 is NOT the bug — float32 rounds `0.1` *up* (opposite sign).
+> float32 is NOT the bug — float32 rounds `0.1` _up_ (opposite sign).
 
-![Patriot Missile simulation](navigation_robotics/output/1_patriot_missile.png)
+![Patriot Missile simulation](navigation_robotics/output/patriot_missile.png)
 
 ---
 
@@ -93,15 +93,15 @@ Computes horizontal velocity `BH` simultaneously in float64 / float32 / float16:
 
 ## Core concept
 
-For an IEEE float with *m* mantissa bits, consecutive representable integers
-exist only up to `2^m`.  Beyond that threshold, the **gap doubles** every power
+For an IEEE float with _m_ mantissa bits, consecutive representable integers
+exist only up to `2^m`. Beyond that threshold, the **gap doubles** every power
 of two:
 
-| Format | Mantissa bits | Exact up to | Gap at 2× threshold |
-|--------|---------------|-------------|---------------------|
-| float16 | 10 | 2,048 | 2 (then 4, 8, 16…) |
-| float32 | 23 | 16,777,216 | 2 (then 4, 8…) |
-| float64 | 52 | 9 × 10¹⁵ | negligible in practice |
+| Format  | Mantissa bits | Exact up to | Gap at 2× threshold    |
+| ------- | ------------- | ----------- | ---------------------- |
+| float16 | 10            | 2,048       | 2 (then 4, 8, 16…)     |
+| float32 | 23            | 16,777,216  | 2 (then 4, 8…)         |
+| float64 | 52            | 9 × 10¹⁵    | negligible in practice |
 
 Each demo targets a different **consequence** of this gap:
 values cannot be stored, accumulated, cast, or converged to correctly.
