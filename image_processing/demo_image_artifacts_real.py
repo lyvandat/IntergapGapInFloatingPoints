@@ -62,7 +62,7 @@ def apply_coord_artifact(img_gray: np.ndarray, offset_exp: int = 24):
     Beyond 2^offset_exp, float32 gap = 2, so consecutive integers collide:
         float32(OFFSET + 1) rounds to OFFSET  → pixel 1 reads from pixel 0
         float32(OFFSET + 3) rounds to OFFSET+4 → pixel 3 reads from pixel 4
-    50 % of columns land on the wrong source, creating periodic stripes.
+    50 % of columns land on the wrong source, creating periodic stripes .
     """
     OFFSET = np.float32(2 ** offset_exp)
     h, w   = img_gray.shape
@@ -99,7 +99,7 @@ def make_figure():
     # -- highlight wrong columns on the staircase --
     stairs_rgb = np.stack([img_stairs]*3, axis=2).copy()
     stairs_err = stairs_rgb.copy()
-    stairs_err[:, err_cols] = (
+    stairs_err[:, err_cols] = ( 
         stairs_err[:, err_cols] * 0.3
         + np.array([220, 30, 30])
     ).clip(0, 255).astype(np.uint8)
